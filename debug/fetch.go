@@ -8,7 +8,7 @@ import (
 
 func main() {
 	// test SearchCambridge
-	con := cache.DB
+	con := cache.InitDB("database")
 	inputWord := "test"
 	isFresh := false
 	url, soup, err := dicts.SearchCambridge(con, inputWord, isFresh)
