@@ -92,6 +92,24 @@ func updateRelativeURLs(doc *goquery.Document, baseURL string) error {
 		}
 	})
 
+	// Update <amp-img src> elements
+	doc.Find("amp-img[src]").Each(func(i int, sel *goquery.Selection) {
+		src, exists := sel.Attr("src")
+		if exists {
+			newURL := resolveURL(parsedBaseURL, src)
+			sel.SetAttr("src", newURL)
+		}
+	})
+
+	// Update <source src> elements (Audio/Video sources)
+	doc.Find("source[src]").Each(func(i int, sel *goquery.Selection) {
+		src, exists := sel.Attr("src")
+		if exists {
+			newURL := resolveURL(parsedBaseURL, src)
+			sel.SetAttr("src", newURL)
+		}
+	})
+
 	// Update <link href> elements (CSS files, etc.)
 	doc.Find("link[href]").Each(func(i int, sel *goquery.Selection) {
 		href, exists := sel.Attr("href")
