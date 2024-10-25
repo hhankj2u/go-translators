@@ -9,17 +9,17 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var DB *sql.DB
-var currentDatetime = time.Now()
-
-func init() {
+func InitDB(dbFileName string) *sql.DB {
+	var DB *sql.DB
 	homeDir, _ := os.UserHomeDir()
 	cacheDir := filepath.Join(homeDir, ".cache", "translators")
 	os.MkdirAll(cacheDir, os.ModePerm)
-	dbPath := filepath.Join(cacheDir, "database")
+	dbPath := filepath.Join(cacheDir, dbFileName)
 	DB, _ = sql.Open("sqlite3", dbPath)
 	// Create table if not exists
 	CreateTable(DB)
+
+	return DB
 }
 
 func CreateTable(con *sql.DB) error {
@@ -35,18 +35,20 @@ func CreateTable(con *sql.DB) error {
 }
 
 func InsertIntoTable(con *sql.DB, inputWord, responseWord, url, text string) error {
+	var currentDatetime = time.Now()
 	query := `INSERT INTO words (input_word, response_word, created_at, response_url, response_text) VALUES (?, ?, ?, ?, ?)`
 	_, err := con.Exec(query, inputWord, responseWord, currentDatetime, url, text)
 	return err
 }
 
 func GetCache(con *sql.DB, word, requestURL string) (string, string, error) {
-	query := `SELECT response_url, response_text FROM words WHERE response_url = ? OR response_word = ? OR input_word = ?`
+	query := `SELECT response_url, response_text, created_at FROM words WHERE response_url = ? OR response_word = ? OR input_word = ?`
 	row := con.QueryRow(query, requestURL, word, word)
 
 	var responseURL, responseText string
-	err := row.Scan(&responseURL, &responseText)
-	if err == sql.ErrNoRows {
+	var createdAt time.Time
+	err := row.Scan(&responseURL, &responseText, &createdAt)
+	if err == sql.ErrNoRows || createdAt.Before(time.Now().Add(-24*time.Hour)) {
 		return "", "", nil
 	}
 	return responseURL, responseText, err
