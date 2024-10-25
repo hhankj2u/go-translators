@@ -2,6 +2,7 @@ package cache
 
 import (
 	"database/sql"
+	"errors"
 	"os"
 	"path/filepath"
 	"time"
@@ -48,7 +49,7 @@ func GetCache(con *sql.DB, word, requestURL string) (string, string, error) {
 	var responseURL, responseText string
 	var createdAt time.Time
 	err := row.Scan(&responseURL, &responseText, &createdAt)
-	if err == sql.ErrNoRows || createdAt.Before(time.Now().Add(-24*time.Hour)) {
+	if errors.Is(err, sql.ErrNoRows) || createdAt.Before(time.Now().Add(-24*time.Hour)) {
 		return "", "", nil
 	}
 	return responseURL, responseText, err
@@ -101,7 +102,7 @@ func DeleteWord(con *sql.DB, word string) (bool, [2]string, error) {
 
 	var inputWord, responseURL string
 	err := row.Scan(&inputWord, &responseURL)
-	if err == sql.ErrNoRows {
+	if errors.Is(err, sql.ErrNoRows) {
 		return false, [2]string{}, nil
 	}
 	if err != nil {
