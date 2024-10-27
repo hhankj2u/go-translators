@@ -22,7 +22,7 @@ import { SearchDictionary } from '../wailsjs/go/main/App';
 export default {
   data() {
     return {
-      term: 'banana',
+      term: '',
       results: {},
       baseUrls: {
         WEBSTER: 'https://www.merriam-webster.com',
