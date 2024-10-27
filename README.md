@@ -18,6 +18,11 @@ to this in your browser, and you can call your Go code from devtools.
 
 To build a redistributable, production mode package, use `wails build`.
 
+- For MacOS:
+```
+GOOS=darwin GOARCH=amd64 wails build -tags webkit2_41
+```
+
 # go-translators with qt5.13.0
 
 ## Installation
