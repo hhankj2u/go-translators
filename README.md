@@ -1,13 +1,7 @@
-# README
+# About
+![image](https://github.com/user-attachments/assets/f3e4e88b-83dc-4bd1-9623-4f6bbf05217d)
 
-## About
-
-This is the official Wails Vue template.
-
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
-
-## Live Development
+# Live Development
 
 To run in live development mode, run `wails dev -tags webkit2_41` in the project directory. This will run a Vite development
 server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
