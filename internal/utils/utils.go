@@ -10,8 +10,6 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-var DICTS = settings.DICTS
-
 func MakeASoup(text string) (*goquery.Document, error) {
 	return goquery.NewDocumentFromReader(strings.NewReader(text))
 }
@@ -51,7 +49,7 @@ func ParseResponseURL(inputURL string) string {
 }
 
 func GetRequestURL(baseURL, inputWord, dict string) string {
-	if dict == DICTS[0] {
+	if dict == settings.CAMBRIDGE {
 		queryWord := strings.ReplaceAll(inputWord, " ", "-")
 		queryWord = strings.ReplaceAll(queryWord, "/", "-")
 		return baseURL + queryWord

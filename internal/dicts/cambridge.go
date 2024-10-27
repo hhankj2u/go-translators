@@ -13,6 +13,8 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+type CambridgeDictionary struct{}
+
 const (
 	CAMBRIDGE_URL            = "https://dictionary.cambridge.org"
 	CAMBRIDGE_DICT_BASE_URL  = CAMBRIDGE_URL + "/dictionary/english/"
@@ -20,8 +22,8 @@ const (
 )
 
 // searchCambridge requests web resource and returns the result.
-func SearchCambridge(con *sql.DB, inputWord string, isFresh bool) (string, *goquery.Document, error) {
-	reqURL := utils.GetRequestURL(CAMBRIDGE_DICT_BASE_URL, inputWord, settings.DICTS[0])
+func (c CambridgeDictionary) Search(con *sql.DB, inputWord string, isFresh bool) (string, *goquery.Document, error) {
+	reqURL := utils.GetRequestURL(CAMBRIDGE_DICT_BASE_URL, inputWord, settings.CAMBRIDGE)
 
 	if !isFresh {
 		cached, soup, err := CacheRun(con, inputWord, reqURL)
@@ -29,16 +31,16 @@ func SearchCambridge(con *sql.DB, inputWord string, isFresh bool) (string, *goqu
 			return "", nil, err
 		}
 		if !cached {
-			return FreshRun(con, reqURL, inputWord)
+			return c.FreshRun(con, reqURL, inputWord)
 		}
 		return reqURL, soup, nil
 	} else {
-		return FreshRun(con, reqURL, inputWord)
+		return c.FreshRun(con, reqURL, inputWord)
 	}
 }
 
 // fetchCambridge gets response URL and response text for later parsing.
-func FetchCambridge(reqURL, inputWord string) (bool, string, string, error) {
+func (c CambridgeDictionary) Fetch(reqURL, inputWord string) (bool, string, string, error) {
 	client := &http.Client{}
 	resp, err := Fetch(reqURL, client)
 	if err != nil {
@@ -47,7 +49,7 @@ func FetchCambridge(reqURL, inputWord string) (bool, string, string, error) {
 	defer resp.Body.Close()
 
 	if resp.Request.URL.String() == CAMBRIDGE_DICT_BASE_URL {
-		fmt.Printf("%s \"%s\" in %s\n", settings.OP[6], inputWord, settings.DICTS[0])
+		fmt.Printf("%s \"%s\" in %s\n", settings.OP[6], inputWord, settings.CAMBRIDGE)
 		spellReqURL := utils.GetRequestURLSpellcheck(CAMBRIDGE_SPELLCHECK_URL, inputWord)
 
 		spellResp, err := Fetch(spellReqURL, client)
@@ -67,14 +69,14 @@ func FetchCambridge(reqURL, inputWord string) (bool, string, string, error) {
 			return false, "", "", err
 		}
 
-		fmt.Printf("%s \"%s\" in %s at %s\n", settings.OP[5], inputWord, settings.DICTS[0], resURL)
+		fmt.Printf("%s \"%s\" in %s at %s\n", settings.OP[5], inputWord, settings.CAMBRIDGE, resURL)
 		return true, resURL, string(resText), nil
 	}
 }
 
 // freshRun prints the result without cache.
-func FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document, error) {
-	found, resURL, resText, err := FetchCambridge(reqURL, inputWord)
+func (c CambridgeDictionary) FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document, error) {
+	found, resURL, resText, err := c.Fetch(reqURL, inputWord)
 	if err != nil {
 		return "", nil, err
 	}
@@ -84,7 +86,7 @@ func FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document,
 		if err != nil {
 			return "", nil, err
 		}
-		responseWord := ParseResponseWord(soup)
+		responseWord := c.ParseResponseWord(soup)
 		expected := soup.Find("div.page")
 		html, err := expected.Html()
 		if err != nil {
@@ -117,7 +119,7 @@ func FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document,
 }
 
 // parseResponseWord parses the response word from HTML head title tag.
-func ParseResponseWord(soup *goquery.Document) string {
+func (c CambridgeDictionary) ParseResponseWord(soup *goquery.Document) string {
 	temp := strings.TrimSpace(soup.Find("title").Text())
 	temp = strings.Split(temp, "-")[0]
 	if strings.Contains(temp, "|") {

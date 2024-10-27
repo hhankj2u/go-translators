@@ -16,6 +16,14 @@ import (
 	"github.com/mattn/go-sqlite3"
 )
 
+// Dictionary defines the interface for dictionary operations.
+type Dictionary interface {
+    Search(con *sql.DB, inputWord string, isFresh bool) (string, *goquery.Document, error)
+    Fetch(reqURL, inputWord string) (bool, string, string, error)
+    FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document, error)
+    ParseResponseWord(soup *goquery.Document) string
+}
+
 // Fetch makes a web request with retry mechanism.
 func Fetch(url string, client *http.Client) (*http.Response, error) {
 	ua := uarand.GetRandom()

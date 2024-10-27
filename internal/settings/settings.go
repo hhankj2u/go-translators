@@ -13,10 +13,8 @@ var OP = []string{
 	"DELETED",
 }
 
-var DICTS = []string{"CAMBRIDGE", "WEBSTER", "SOHA"}
-
 const (
-	CAMBRIDGE = iota
-	WEBSTER
-	SOHA
+    CAMBRIDGE = "CAMBRIDGE"
+    WEBSTER   = "WEBSTER"
+    SOHA      = "SOHA"
 )

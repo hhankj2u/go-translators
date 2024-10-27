@@ -2,7 +2,6 @@ package utils_test
 
 import (
 	"testing"
-	"translators/internal/settings"
 	"translators/internal/utils"
 )
 
@@ -54,7 +53,6 @@ func TestParseResponseURL(t *testing.T) {
 }
 
 func TestGetRequestURL(t *testing.T) {
-	settings.DICTS = []string{"dict1", "dict2"}
 	baseURL := "http://example.com/"
 	inputWord := "test word"
 	dict := "dict1"
