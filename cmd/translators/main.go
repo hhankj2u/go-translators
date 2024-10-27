@@ -1,34 +1,43 @@
 package main
 
 import (
-	"log"
+    "os"
 
-	"translators/internal/cache"
-	"translators/internal/dicts"
-	"translators/internal/settings"
-
-	webview "github.com/hhankj2u/webview_go"
+    "github.com/therecipe/qt/core"
+    "github.com/therecipe/qt/widgets"
+    "github.com/therecipe/qt/webengine" // Correct import for webengine
 )
 
-// "translators/internal/settings"
-
 func main() {
-	// Call the function from dicts package and log to console
-	con := cache.InitDB(settings.DICTS[0])
-	_, soup, err := dicts.SearchCambridge(con, "banana", false)
-	if err != nil {
-		log.Println(err)
-	}
+    // Initialize Qt application
+    app := widgets.NewQApplication(len(os.Args), os.Args)
 
-	w := webview.New(false)
-	defer w.Destroy()
-	w.SetTitle("Basic Example")
-	w.SetSize(1000, 600, webview.HintNone)
-	html, err := soup.Html()
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	w.SetHtml(html)
-	w.Run()
+    // Create the main window
+    window := widgets.NewQMainWindow(nil, 0)
+    window.SetWindowTitle("Qt WebEngine Example")
+    window.SetMinimumSize2(1024, 768)
+
+    // Create a central widget and layout
+    centralWidget := widgets.NewQWidget(nil, 0)
+    layout := widgets.NewQVBoxLayout()
+    centralWidget.SetLayout(layout)
+    window.SetCentralWidget(centralWidget)
+
+    // Create a WebEngineView for rendering web content
+    webView := webengine.NewQWebEngineView(nil)
+    if webView == nil {
+        panic("Failed to create QWebEngineView") // Check if webView is initialized properly
+    }
+
+    // Load a URL in the WebEngineView
+    webView.SetUrl(core.NewQUrl3("https://www.example.com", 0))
+
+    // Add the WebEngineView to the layout
+    layout.AddWidget(webView, 0, 0)
+
+    // Show the window
+    window.Show()
+
+    // Run the application
+    app.Exec()
 }
