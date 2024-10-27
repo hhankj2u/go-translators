@@ -54,13 +54,13 @@ func (t *transport) RoundTrip(req *http.Request) (*http.Response, error) {
 // CacheRun checks the cache is from Cambridge or Merriam-Webster.
 func CacheRun(con *sql.DB, inputWord, reqURL string) (bool, *goquery.Document, error) {
 	// data is a tuple (response_url, response_text) if any
-	responseUrl, responseText, err := cache.GetCache(con, inputWord, reqURL)
+	_, responseText, err := cache.GetCache(con, inputWord, reqURL)
 	if err != nil {
 		return false, nil, err
 	}
 
 	if responseText != "" {
-		doc, err := utils.MakeASoup(string(responseText), utils.ExtractSchemeAndHost(responseUrl))
+		doc, err := utils.MakeASoup(string(responseText))
 		if err != nil {
 			return false, nil, err
 		}

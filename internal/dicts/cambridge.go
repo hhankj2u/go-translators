@@ -80,7 +80,7 @@ func FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document,
 	}
 
 	if found {
-		soup, err := utils.MakeASoup(resText, CAMBRIDGE_URL)
+		soup, err := utils.MakeASoup(resText)
 		if err != nil {
 			return "", nil, err
 		}
@@ -102,7 +102,7 @@ func FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document,
 		spellResURL, spellResText := resURL, resText
 		fmt.Printf("%s the parsed result of %s\n", settings.OP[4], spellResURL)
 
-		soup, err := utils.MakeASoup(spellResText, CAMBRIDGE_URL)
+		soup, err := utils.MakeASoup(spellResText)
 		if err != nil {
 			return "", nil, err
 		}

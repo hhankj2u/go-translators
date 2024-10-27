@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <h1>Dictionary Search</h1>
     <input v-model="term" placeholder="Enter word"/>
     <button @click="search">Search</button>
 

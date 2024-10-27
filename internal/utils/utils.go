@@ -12,10 +12,8 @@ import (
 
 var DICTS = settings.DICTS
 
-func MakeASoup(text string, baseURL string) (*goquery.Document, error) {
-	doc, err := goquery.NewDocumentFromReader(strings.NewReader(text))
-	updateRelativeURLs(doc, baseURL)
-	return doc, err
+func MakeASoup(text string) (*goquery.Document, error) {
+	return goquery.NewDocumentFromReader(strings.NewReader(text))
 }
 
 func ReplaceAll(input string) string {

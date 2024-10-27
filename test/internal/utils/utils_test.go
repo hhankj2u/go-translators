@@ -10,12 +10,12 @@ func TestMakeASoup(t *testing.T) {
 	validHTML := "<html><body><p>Hello, World!</p></body></html>"
 	invalidHTML := "<html><body><p>Hello, World!</body></html>"
 
-	_, err := utils.MakeASoup(validHTML, "http://example.com/")
+	_, err := utils.MakeASoup(validHTML)
 	if err != nil {
 		t.Fatalf("Expected no error for valid HTML, got %v", err)
 	}
 
-	_, err = utils.MakeASoup(invalidHTML, "http://example.com/")
+	_, err = utils.MakeASoup(invalidHTML)
 	if err != nil {
 		t.Fatalf("Expected no error for invalid HTML, got %v", err)
 	}

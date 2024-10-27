@@ -25,7 +25,7 @@ func (a *App) Startup(ctx context.Context) {
 
 // SearchDictionary performs the dictionary search and returns the result HTML
 func (a *App) SearchDictionary(term string) (string, error) {
-    _, soup, err := dicts.SearchCambridge(a.dbConnection, term, true)
+    _, soup, err := dicts.SearchCambridge(a.dbConnection, term, false)
     if err != nil {
         return "", err
     }
