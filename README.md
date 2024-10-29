@@ -18,7 +18,7 @@ GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc wails build -race -upx -clea
 ```
 - For mac
 ```
-GOOS=darwin GOARCH=amd64 wails build -race -upx -clean
+GOOS=darwin GOARCH=amd64 $(go env GOPATH)/bin/ưails build -race -upx -clean
 ```
 # go-translators with qt5.13.0
 
