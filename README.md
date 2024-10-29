@@ -18,6 +18,11 @@ to this in your browser, and you can call your Go code from devtools.
 
 To build a redistributable, production mode package, use `wails build`.
 
+- For windows
+```
+GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc wails build -tags webkit2_41
+```
+
 # go-translators with qt5.13.0
 
 ## Installation

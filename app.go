@@ -9,6 +9,8 @@ import (
 	"translators/internal/cache"
 	"translators/internal/dicts"
 	"translators/internal/settings"
+
+	"github.com/atotto/clipboard"
 )
 
 type App struct {
@@ -70,4 +72,9 @@ func (a *App) SearchDictionary(term string) (map[string]string, error) {
 	}
 
 	return results, nil
+}
+
+// ReadClipboard reads the clipboard content
+func (a *App) ReadClipboard() (string, error) {
+	return clipboard.ReadAll()
 }
