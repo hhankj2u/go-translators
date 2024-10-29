@@ -92,6 +92,10 @@ func (c CambridgeDictionary) FreshRun(con *sql.DB, reqURL, inputWord string) (st
 		if err != nil {
 			return "", nil, err
 		}
+
+		// hide #onetrust-consent-sdk
+		html += `<style>#onetrust-consent-sdk {display: none;}</style>`
+
 		soup.Find("body").SetHtml(html)
 
 		html, err = soup.Html()

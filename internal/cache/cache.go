@@ -3,6 +3,7 @@ package cache
 import (
 	"database/sql"
 	"errors"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -49,7 +50,12 @@ func GetCache(con *sql.DB, word, requestURL string) (string, string, error) {
 	var responseURL, responseText string
 	var createdAt time.Time
 	err := row.Scan(&responseURL, &responseText, &createdAt)
-	if errors.Is(err, sql.ErrNoRows) || createdAt.Before(time.Now().Add(-24*time.Hour)) {
+	var expired = createdAt.Before(time.Now().Add(-24 * time.Hour))
+	if errors.Is(err, sql.ErrNoRows) || expired {
+		if expired {
+			log.Printf("Cache expired for %s\n", word)
+			DeleteWord(con, word)
+		}
 		return "", "", nil
 	}
 	return responseURL, responseText, err

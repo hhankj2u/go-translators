@@ -72,7 +72,7 @@ export default {
           console.log('Failed to read clipboard contents: ', err);
         }
       }
-    }
+    },
   },
   mounted() {
     setInterval(this.readClipboard, 2000);
@@ -136,10 +136,5 @@ iframe {
   height: 100%;
   /* Full height within result-item */
   width: 100%;
-}
-
-/* Disable cookie consent message */
-iframe[id="onetrust-consent-sdk"] {
-  display: none;
 }
 </style>
