@@ -1,4 +1,8 @@
 # About
+- 0.0.2
+![image](https://github.com/user-attachments/assets/c7cf81dd-4ca4-4990-a2b9-6934a041820f)
+
+- 0.0.1
 ![image](https://github.com/user-attachments/assets/f3e4e88b-83dc-4bd1-9623-4f6bbf05217d)
 
 # Live Development
