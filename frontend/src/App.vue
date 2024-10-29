@@ -2,8 +2,11 @@
   <div id="app">
     <!-- Container for input and button -->
     <div class="input-container">
-      <input v-model="term" placeholder="Enter word" />
+      <input v-model="term" placeholder="Enter word" @keyup.enter="search" />
       <button @click="search">Search</button>
+      <label>
+        <input type="checkbox" v-model="disableClipboard" /> Disable Clipboard
+      </label>
     </div>
 
     <!-- Render resultHtml in an iframe for full HTML loading -->
@@ -17,13 +20,16 @@
 </template>
 
 <script>
-import { SearchDictionary } from '../wailsjs/go/main/App';
+import { ref } from 'vue';
+import { SearchDictionary, ReadClipboard } from '../wailsjs/go/main/App';
 
 export default {
   data() {
     return {
       term: '',
       results: {},
+      disableClipboard: ref(true),
+      previousClipboardContent: '',
       baseUrls: {
         WEBSTER: 'https://www.merriam-webster.com',
         CAMBRIDGE: 'https://dictionary.cambridge.org',
@@ -50,7 +56,26 @@ export default {
       } catch (error) {
         console.error('Error fetching dictionary result:', error);
       }
+    },
+    async readClipboard() {
+      if (!this.disableClipboard) {
+        try {
+          const text = await ReadClipboard();
+          if (text !== this.previousClipboardContent) {
+            this.previousClipboardContent = text;
+            const words = text.split(/\s+/).slice(0, 3).join(' ');
+            console.log('Clipboard contents:', words);
+            this.term = words;
+            this.search();
+          }
+        } catch (err) {
+          console.log('Failed to read clipboard contents: ', err);
+        }
+      }
     }
+  },
+  mounted() {
+    setInterval(this.readClipboard, 2000);
   }
 };
 </script>
@@ -60,18 +85,27 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh; /* Set full height for the app */
+  justify-content: center;
+  /* Center children vertically */
+  height: 100vh;
+  /* Set full height for the app */
 }
 
 .input-container {
-  display: flex; /* Use flex to align input and button */
-  margin-bottom: 20px; /* Space between input/button and results */
+  display: flex;
+  /* Use flex to align input and button */
+  margin-bottom: 20px;
+  /* Space between input/button and results */
+  justify-content: center;
+  /* Center children horizontally */
 }
 
 .input-container input {
-  margin-right: 10px; /* Space between input and button */
+  margin-right: 10px;
+  /* Space between input and button */
   padding: 10px;
-  flex: 1; /* Allow input to grow and take available space */
+  flex: 1;
+  /* Allow input to grow and take available space */
 }
 
 .results-container {
@@ -80,22 +114,32 @@ export default {
   gap: 20px;
   width: 100%;
   justify-content: space-evenly;
-  height: calc(100vh - 80px); /* Adjust for input/button height */
-  overflow-y: auto; /* Add scrolling if content exceeds height */
+  height: calc(100vh - 80px);
+  /* Adjust for input/button height */
+  overflow-y: auto;
+  /* Add scrolling if content exceeds height */
 }
 
 .result-item {
-  flex: 1 1 30%; /* Each item takes up roughly a third of the container */
+  flex: 1 1 30%;
+  /* Each item takes up roughly a third of the container */
   max-width: 30%;
   display: flex;
   flex-direction: column;
-  height: 100%; /* Full height of the container */
+  height: 100%;
+  /* Full height of the container */
 }
 
 iframe {
   flex: 1;
   border: none;
-  height: 100%; /* Full height within result-item */
+  height: 100%;
+  /* Full height within result-item */
   width: 100%;
+}
+
+/* Disable cookie consent message */
+iframe[id="onetrust-consent-sdk"] {
+  display: none;
 }
 </style>

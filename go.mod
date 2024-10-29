@@ -6,6 +6,7 @@ toolchain go1.23.2
 
 require (
 	github.com/PuerkitoBio/goquery v1.10.0
+	github.com/atotto/clipboard v0.1.4
 	github.com/corpix/uarand v0.2.0
 	github.com/mattn/go-sqlite3 v1.14.24
 	github.com/therecipe/qt v0.0.0-20200904063919-c0c124a5770d
