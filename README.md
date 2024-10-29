@@ -16,7 +16,10 @@ To build a redistributable, production mode package, use `wails build`.
 ```
 GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc wails build -race -upx -clean -tags webkit2_41
 ```
-
+- For mac
+```
+GOOS=darwin GOARCH=amd64 wails build -race -upx -clean
+```
 # go-translators with qt5.13.0
 
 ## Installation
