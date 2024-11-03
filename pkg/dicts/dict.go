@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"time"
 
-	"translators/internal/cache"
-	"translators/internal/settings"
-	"translators/internal/utils"
+	"github.com/hhankj2u/translators/pkg/cache"
+	"github.com/hhankj2u/translators/pkg/settings"
+	"github.com/hhankj2u/translators/pkg/utils"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/corpix/uarand"
@@ -18,10 +18,10 @@ import (
 
 // Dictionary defines the interface for dictionary operations.
 type Dictionary interface {
-    Search(con *sql.DB, inputWord string, isFresh bool) (string, *goquery.Document, error)
-    Fetch(reqURL, inputWord string) (bool, string, string, error)
-    FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document, error)
-    ParseResponseWord(soup *goquery.Document) string
+	Search(con *sql.DB, inputWord string, isFresh bool) (string, *goquery.Document, error)
+	Fetch(reqURL, inputWord string) (bool, string, string, error)
+	FreshRun(con *sql.DB, reqURL, inputWord string) (string, *goquery.Document, error)
+	ParseResponseWord(soup *goquery.Document) string
 }
 
 // Fetch makes a web request with retry mechanism.

@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"log"
 	"sync"
-	"translators/internal/cache"
-	"translators/internal/dicts"
-	"translators/internal/settings"
+
+	"github.com/hhankj2u/translators/pkg/cache"
+	"github.com/hhankj2u/translators/pkg/dicts"
+	"github.com/hhankj2u/translators/pkg/settings"
 
 	"github.com/atotto/clipboard"
 )

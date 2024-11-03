@@ -2,7 +2,8 @@ package utils_test
 
 import (
 	"testing"
-	"translators/internal/utils"
+
+	"github.com/hhankj2u/translators/pkg/utils"
 )
 
 func TestMakeASoup(t *testing.T) {

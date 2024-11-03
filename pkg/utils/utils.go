@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strings"
 
-	"translators/internal/settings"
+	"github.com/hhankj2u/translators/pkg/settings"
 
 	"github.com/PuerkitoBio/goquery"
 )

@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"translators/internal/settings"
-	"translators/internal/utils"
+	"github.com/hhankj2u/translators/pkg/settings"
+	"github.com/hhankj2u/translators/pkg/utils"
 
 	"github.com/PuerkitoBio/goquery"
 )

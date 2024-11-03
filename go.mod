@@ -1,4 +1,4 @@
-module translators
+module github.com/hhankj2u/translators
 
 go 1.23
 
@@ -42,3 +42,5 @@ require (
 	golang.org/x/sys v0.25.0 // indirect
 	golang.org/x/text v0.18.0 // indirect
 )
+
+replace github.com/hhankj2u/translators => ../go-translators
