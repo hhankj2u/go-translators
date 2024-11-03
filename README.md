@@ -24,6 +24,10 @@ GOOS=windows GOARCH=amd64 CC=x86_64-w64-mingw32-gcc wails build -race -upx -clea
 ```
 GOOS=darwin GOARCH=amd64 $(go env GOPATH)/bin/ưails build -race -upx -clean
 ```
+- For linux
+```
+GOOS=linux GOARCH=amd64 wails build -race -upx -clean -tags webkit2_41
+```
 # go-translators with qt5.13.0
 
 ## Installation
